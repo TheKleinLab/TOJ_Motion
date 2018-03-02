@@ -34,7 +34,6 @@ class TOJ_Motion(klibs.Experiment):
         
         # Stimulus Sizes
         
-        line_stroke = deg_to_px(0.1)
         target_size = deg_to_px(3.0)
         diamond_size = sqrt(target_size**2/2.0)
         probe_diameter = deg_to_px(1.0)
@@ -75,26 +74,30 @@ class TOJ_Motion(klibs.Experiment):
         self.motion_duration = 1.5 # seconds
         
         # Experiment Messages
-        toj_string = "Which shape {0} first?\n(White = 8   Black = 2)"
+        
+        if not P.condition:
+            P.condition = P.default_condition
+            
+        toj_string = "Which shape {0} {1}?\n(White = 8   Black = 2)"
+        stationary_string = toj_string.format("appeared", P.condition)
+        motion_string = toj_string.format("touched the line", P.condition)
         self.toj_prompts = {
-            'stationary': message(toj_string.format("appeared"), align="center", blit_txt=False),
-            'motion': message(toj_string.format("touched the line"), align="center", blit_txt=False)
+            'stationary': message(stationary_string, align="center", blit_txt=False),
+            'motion': message(motion_string, align="center", blit_txt=False)
         }
         
         # Initialize ResponseCollector keymaps
+
+        if P.use_numpad:
+            keysyms = [sdl2.SDLK_KP_8, sdl2.SDLK_KP_2]
+        else:
+            keysyms = [sdl2.SDLK_8, sdl2.SDLK_2]
 
         self.toj_keymap = KeyMap(
             "toj_responses", # Name
             ['8', '2'], # UI labels
             ['white', 'black'], # Data labels
-            [sdl2.SDLK_8, sdl2.SDLK_2] # SDL2 Keysyms
-            #[sdl2.SDLK_KP_8, sdl2.SDLK_KP_2] # SDL2 Keysyms
-        )
-        self.probe_keymap = KeyMap(
-            "probe_detection", # Name
-            ['Space'], # UI label
-            ['detection'], # Data label
-            [sdl2.SDLK_SPACE] # SDL2 Keysym
+            keysyms # SDL2 Keysyms
         )
 
         # Initialize second ResponseCollector object for colour wheel responses
@@ -112,6 +115,7 @@ class TOJ_Motion(klibs.Experiment):
             self.insert_practice_block(1, trial_counts=8, factor_mask=toj_only)
             self.insert_practice_block((2,4), trial_counts=8, factor_mask=probe_only)
         self.trial_factory.dump()
+
 
     def block(self):
         
@@ -178,8 +182,6 @@ class TOJ_Motion(klibs.Experiment):
         self.rc.keypress_listener.interrupts = True
 
         if self.probe_trial:
-            #self.rc.keypress_listener.key_map = self.probe_keymap
-            #self.rc.display_callback = self.probe_callback
             self.wheel_rc.uses(RC_COLORSELECT)
             self.wheel_rc.terminate_after = [10, TK_S]
             self.wheel_rc.display_callback = self.wheel_callback
@@ -325,6 +327,7 @@ class TOJ_Motion(klibs.Experiment):
             try:
                 angle_err, response_col = self.wheel_rc.color_listener.response(rt=False)
                 wheel_rt = self.wheel_rc.color_listener.response(value=False)
+                response_col = list(response_col) # to be consistent with probe_col
             except ValueError:
                 # if no response made (timeout), only one value will be returned
                 angle_err, response_col, wheel_rt = ['NA', 'NA', 'timeout']
@@ -333,6 +336,7 @@ class TOJ_Motion(klibs.Experiment):
         return {
             "block_num": P.block_number,
             "trial_num": P.trial_number,
+            "toj_condition": P.condition,
             "trial_type": 'probe' if self.probe_trial else 'toj',
             "target_type": self.toj_type,
             "t1_location": self.t1_location,
@@ -421,3 +425,4 @@ class Animation(object):
         x = self.__diff_x * movement
         y = self.__diff_y * movement
         return (x, y)
+        

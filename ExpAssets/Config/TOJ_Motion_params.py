@@ -1,9 +1,11 @@
 ### Klibs Parameter overrides ###
 
+from klibs import P
+
 #########################################
 # Runtime Settings
 #########################################
-collect_demographics = False
+collect_demographics = True
 manual_demographics_collection = False
 manual_trial_generation = False
 run_practice_blocks = True
@@ -40,9 +42,10 @@ saccadic_motion_threshold = 0.15
 # Experiment Structure
 #########################################
 multi_session_project = False
-trials_per_block = 0
+trials_per_block = 360
 blocks_per_experiment = 2
 table_defaults = {} 
+conditions = ['first', 'second']
 
 #########################################
 # Development Mode Settings
@@ -57,9 +60,11 @@ dm_show_gaze_dot = True
 #########################################
 primary_table = "trials"
 unique_identifier = "userhash"
-default_participant_fields = [[unique_identifier, "participant"], "sex", "age", "handedness"]
-default_participant_fields_sf = [[unique_identifier, "participant"], "random_seed", "sex", "age", "handedness"]
+default_participant_fields = [[unique_identifier, "participant"], "gender", "age", "handedness"]
+default_participant_fields_sf = [[unique_identifier, "participant"], "random_seed", "gender", "age", "handedness"]
 
 #########################################
 # PROJECT-SPECIFIC VARS
 #########################################
+use_numpad = True # If True, use numpad '2' and '8' instead of regular '2' and '8' for responses
+default_condition = 'first' # if no condition specified, default to 'first'
