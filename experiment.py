@@ -166,8 +166,6 @@ class TOJ_Motion(klibs.Experiment):
         if not P.development_mode:
             if P.block_number == 3: # If participant is halfway done
                 slack_message("Halfway done ({0}/{1})".format(P.block_number, P.blocks_per_experiment))
-            elif P.block_number == 4: # If participant is on last block
-                slack_message("On last block ({0}/{1})".format(P.block_number, P.blocks_per_experiment))
         
         
     def setup_response_collector(self):
