@@ -396,19 +396,24 @@ class Animation(object):
         self.__diff_x = end[0]-start[0]
         self.__diff_y = end[1]-start[1]
         self.duration = duration
+        self.freq = float(sdl2.SDL_GetPerformanceFrequency())
         
     def reset(self):
         self.started = False
         self.done = False
+    
+    def highres_time(self):
+        # Uses SDL2's high res time functions for smoother animations
+        return sdl2.SDL_GetPerformanceCounter()/self.freq
     
     @property
     def position(self):
         if self.done == True:
             return self.end
         if not self.started:
-            self.start_time = time.time()
+            self.start_time = self.highres_time()
             self.started = True
-        t = time.time()
+        t = self.highres_time()
         if self.last_time and (t - self.last_time) > 0.017:
             print("refresh time: {0}".format(t - self.last_time))
         movement = (t - self.start_time)/self.duration
