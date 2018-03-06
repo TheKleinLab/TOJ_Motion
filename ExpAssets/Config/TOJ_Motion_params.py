@@ -1,5 +1,9 @@
 ### Klibs Parameter overrides ###
 
+# All of these values can be overridden locally in a file here:
+# TOJ_Motion/ExpAssets/Local/TOJ_Motion_params.py
+# You will need to create it if it doesn't already exist.
+
 from klibs import P
 
 #########################################
@@ -44,7 +48,7 @@ saccadic_motion_threshold = 0.15
 #########################################
 multi_session_project = False
 trials_per_block = 360
-blocks_per_experiment = 2
+blocks_per_experiment = 2 # practice blocks are appended later in experiment.py
 table_defaults = {} 
 conditions = ['first', 'second']
 
@@ -67,5 +71,6 @@ default_participant_fields_sf = [[unique_identifier, "participant"], "random_see
 #########################################
 # PROJECT-SPECIFIC VARS
 #########################################
+trials_per_practice_block = 40
 use_numpad = True # If True, use numpad '2' and '8' instead of regular '2' and '8' for responses
 default_condition = 'first' # if no condition specified, default to 'first'

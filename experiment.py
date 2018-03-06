@@ -112,8 +112,9 @@ class TOJ_Motion(klibs.Experiment):
         probe_only = {"t1_t2_soa": [0.0]}
         
         if P.run_practice_blocks:
-            self.insert_practice_block(1, trial_counts=8, factor_mask=toj_only)
-            self.insert_practice_block((2,4), trial_counts=8, factor_mask=probe_only)
+            num = P.trials_per_practice_block
+            self.insert_practice_block(1, trial_counts=num, factor_mask=toj_only)
+            self.insert_practice_block((2,4), trial_counts=num, factor_mask=probe_only)
         self.trial_factory.dump()
 
 
@@ -150,13 +151,13 @@ class TOJ_Motion(klibs.Experiment):
         while message_interval.counting():
             ui_request() # Allow quitting during loop
             fill()
-            blit(msg, 8, (P.screen_c[0], 50))
+            blit(msg, 8, (P.screen_c[0], P.screen_y*0.4))
             flip()
         flush()
         
         fill()
-        blit(msg, 8, (P.screen_c[0], 50))
-        message("Press any key to start.", registration=5, location=[P.screen_c[0], P.screen_y*0.8])
+        blit(msg, 8, (P.screen_c[0], P.screen_y*0.4))
+        message("Press any key to start.", registration=5, location=[P.screen_c[0], P.screen_y*0.6])
         flip()
         any_key()
 
