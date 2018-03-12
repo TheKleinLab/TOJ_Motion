@@ -420,8 +420,8 @@ class Animation(object):
         if movement > 1.0:
             self.done = True
             return self.end
-        x = float(self.start[0] + (self.__diff_x * movement))
-        y = float(self.start[1] + (self.__diff_y * movement))
+        x = int(self.start[0] + (self.__diff_x * movement))
+        y = int(self.start[1] + (self.__diff_y * movement))
         return (x, y)
     
     @property
