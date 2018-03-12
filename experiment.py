@@ -344,6 +344,7 @@ class TOJ_Motion(klibs.Experiment):
             "t1_t2_soa": self.t1_t2_soa,
             "toj_response": toj_response,
             "toj_rt": toj_rt,
+            "probe_loc": self.probe_location if self.probe_trial else 'NA',
             "probe_col": str(self.probe.fill_color[:3]) if self.probe_trial else 'NA',
             "response_col": str(response_col[:3]),
             "angle_err": angle_err,
@@ -419,8 +420,8 @@ class Animation(object):
         if movement > 1.0:
             self.done = True
             return self.end
-        x = int(self.start[0] + (self.__diff_x * movement))
-        y = int(self.start[1] + (self.__diff_y * movement))
+        x = float(self.start[0] + (self.__diff_x * movement))
+        y = float(self.start[1] + (self.__diff_y * movement))
         return (x, y)
     
     @property

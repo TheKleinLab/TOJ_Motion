@@ -66,6 +66,7 @@ CREATE TABLE trials (
 	t1_t2_soa text not null,
 	toj_response text not null,
 	toj_rt text not null,
+	probe_loc text not null,
 	probe_col text not null,
 	response_col text not null,
 	angle_err text not null,
